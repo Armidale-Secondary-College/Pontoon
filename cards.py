@@ -1,7 +1,10 @@
 import random
 
 def packsort(elem):
-    suite, card = elem
+    if len(elem) == 3:
+        deck, suite, card = elem
+    else:
+        suite, card = elem
     #print('entered packsort with {0} {1} ' .format (suite ,card))
     cards = {'A':1,'J':11,'Q':12,'K':13}
     suites = {'S':100,'H':200,'D':300,'C':400}
@@ -29,9 +32,9 @@ class deck:
                     pack.append((suite,'K'))
                 else:
                     pack.append((suite,str(cards)))
-        print('packsort')
         pack.sort(key=packsort)
         self.pack = pack
+        self.cardcount = 0
         print(self.pack)
         return
         
@@ -39,18 +42,35 @@ class deck:
         if self.debug: print('shuffle entered')
         return random.shuffle(self.pack)
         
+    def __iter__(self):
+        return self
+        
+    def __next__(self):
+        self.cardcount += 1
+        if self.cardcount < len(self.pack):
+            width = len(self.pack[self.cardcount])
+            card = self.pack[self.cardcount][width-1] + self.pack[self.cardcount][width-2]
+            return card
+        else:
+            raise StopIteration
+        
     def __str__(self):
         if self.debug: print('__str__ entered')
-        
         deck_str = ''
         for card in self.pack:
             deck_str += str(card) + '\n'
         if self.debug: print(deck_str)
         return deck_str
         
-class shoe(deck)
-    def __init__(self, packs=3):
-        self.packs = []
-        for num range (0, packs):
-            super.init
+class shoe(deck):
+    def __init__(self, decks=3):
+        packs = []
+        super().__init__()
+        for num in range (0, decks):
+            for card in self.pack:
+                packs.append((num, card[0], card[1]))
+        self.pack=packs
+        
+ class pontoon()           
+                
             
